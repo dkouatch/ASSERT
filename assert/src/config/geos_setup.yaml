@@ -1,0 +1,194 @@
+#-----------------------------------------------------------------------------------
+# This YAML configuration file defines the setup for a particular GEOS CTM workflow.
+#-----------------------------------------------------------------------------------
+---
+USERCONFIG:
+
+  # ---> Test report message (One sentence, no quotes)
+  message: Regression testing of GEOS CTM code base
+
+  #-----------------
+  # User information
+  #-----------------
+  # ---> sponsor ID required by SLURM
+  sponsor_id: s1043
+  # ---> Where to mail tests report
+  mail_to: Jules.Kouatchou@nasa.gov
+  use_html: yes
+
+  #-----------------------
+  # Repository information
+  #-----------------------
+  repo_module: GEOSctm
+  model_type: CTM
+
+  # ---> Git repository
+  repo_type: git
+  repo_url: git@github.com:GEOS-ESM/GEOSctm.git
+  EXTERN: null
+
+  # ---> CVS repository
+  #repo_type: cvs
+  #repo_url: progressdirect:/cvsroot/esma
+
+  # ---> User ID
+  repo_user_id: jkouatch
+
+  #-----------------
+  # Compilation type
+  #-----------------
+  parallel_build: yes
+  serial_build: no
+  debug_build: no
+
+  #---------------------------------
+  # New tag and Baseline information
+  #--------------------------------
+  # ---> New tag name we want to test
+  new_tag_repo_type: git
+  new_tag_repo_url: git@github.com:GEOS-ESM/GEOSctm.git
+  new_tag: v10.19.0-CTM
+  #new_tag: jk_feature_mepo
+  new_tag_using_mepo: yes
+  #new_tag: Icarus-3_2_p9_CTM_MEM_16-r4-SLES12
+
+  # ---> Baseline tag name that served as reference
+  baseline_tag_repo_type: cvs
+  baseline_tag_repo_url: progressdirect:/cvsroot/esma
+  #baseline_tag: jkGEOSctm_on_SLESS12
+  baseline_tag_using_mepo: no
+  baseline_tag: Icarus-3_2_p9_CTM_MEM_16-r3-SLES12
+
+  # Location of GEOS CTM output baseline files if you do not provide a baseline tag.
+  # This setting is only important if you are doing a baseline test.
+  # Do not change unless you have baseline files in that location.
+  #baseline_dir :  /discover/nobackup/jkouatch/regressionScripts
+
+  #---------------------
+  # Where to do the work
+  #---------------------
+  # ---> Filesystem where we are doing all the work. If it does not exist, it will be created.
+  scratch_dir: /discover/nobackup/jkouatch/regressionScripts/testDIR
+  # ---> Clean the regression testing scratch space (under scratchdir)
+  clean_scratch: yes
+  #
+  # Update baseline_dir with new model answers (change to yes when your code is ready)
+  #update_base: no
+
+  #----------------
+  # Start date/time
+  #----------------
+  ref_year: 2010
+  ref_month: 1
+  ref_day: 1
+  ref_hour: 0
+  ref_min: 0
+  ref_sec: 0
+
+  # Tolerance for comparing two fields
+  tolerance_field: 1.0e-01       # used to compare one variable  in two files
+  tolerance_file: 1.0e-05        # used to compare all variables in two files
+
+####################
+# Test configuration
+####################
+
+# --------------------
+# A BASIC GEOS CTM RUN
+# --------------------
+idealPT:
+  # ---> Do we do the one plus one equal two experiment?
+  one_plus_one: no
+  baseline_test: no
+  collection: idealPT
+  exp_duration: 10
+  #
+  #-------------------------------------------------
+  # Settings needed for running the ctm_setup script
+  #-------------------------------------------------
+  exp_id: idealPT
+  exp_desc: Test Idealized Passive Tracers
+  exp_klone: FALSE
+  exp_hor_res: c90
+  exp_lev: 72
+  exp_hydro: TRUE
+  exp_ioserver: FALSE
+  exp_proc_type: hasw
+  exp_chem: 5
+  exp_emission: MERRA2
+  exp_aero: 1
+  exp_met: MERRA2
+  exp_hst: HISTORY.GEOSCTM.rc.tmpl
+
+pTracerTR:
+  # ---> Do we do the one plus one equal two experiment?
+  one_plus_one: yes
+  baseline_test: no
+  collection: pTracerTR
+
+  #-------------------------------------------------
+  # Settings needed for running the ctm_setup script
+  #-------------------------------------------------
+  exp_id: pTracerTR
+  exp_desc: Test Passive Tracers
+  exp_klone: FALSE
+  exp_hor_res: c90
+  exp_lev: 72
+  exp_hydro: TRUE
+  exp_ioserver: FALSE
+  exp_proc_type: hasw
+  exp_chem: 1
+  exp_emission: MERRA2
+  exp_aero: 1
+  exp_met: MERRA2
+  exp_hst: HISTORY.GEOSCTM.rc.tmpl
+
+GOCART_base:
+  # ---> Do we do the one plus one equal two experiment?
+  one_plus_one: no
+  baseline_test: no
+  collection: tavg2d_aer_x
+  field_names: ["NIEXTTAU", "BRCEXTTAU", "DUEXTTAU", "SSEXTTAU", "SUEXTTAU", "BCEXTTAU", "OCEXTTAU"]
+  exp_duration: 2
+  #
+  #-------------------------------------------------
+  # Settings needed for running the ctm_setup script
+  #-------------------------------------------------
+  exp_id: testGOCART
+  exp_desc: Test GOCART Tracers
+  exp_klone: FALSE
+  exp_hor_res: c90
+  exp_lev: 72
+  exp_hydro: TRUE
+  exp_ioserver: FALSE
+  exp_proc_type: hasw
+  exp_chem: 2
+  exp_emission: MERRA2
+  exp_aero: 1
+  exp_met: MERRA2
+  exp_hst: HISTORY.GEOSCTM.rc.tmpl
+#
+#GMI:
+#  # ---> Do we do the one plus one equal two experiment?
+#  one_plus_one: no
+#  baseline_test: yes
+#  collection: gmi_inst
+#  field_names: ["O3", "CO", "NO"]
+#  exp_duration: 2
+#  #
+#  #-------------------------------------------------
+#  # Settings needed for running the ctm_setup script
+#  #-------------------------------------------------
+#  exp_id: testGMI
+#  exp_desc: Test GMI
+#  exp_klone: FALSE
+#  exp_hor_res: c90
+#  exp_lev: 72
+#  exp_hydro: TRUE
+#  exp_ioserver: FALSE
+#  exp_proc_type: hasw
+#  exp_chem: 3
+#  exp_emission: MERRA2
+#  exp_aero: 1
+#  exp_met: MERRA2
+#  exp_hst: HISTORY.GEOSCTM.rc.tmpl
